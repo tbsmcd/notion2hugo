@@ -2,9 +2,11 @@
 *.swo
 .idea/
 __pycache__/
-/scripts/github/*
-!/scripts/github/.gitkeep
-/scripts/notion/*
-/scripts/.env
+**/__pycache__/
+/app/github/*
+!/app/github/.gitkeep
+/app/notion/*
+/app/.env
 !/scripts/notion/.gitkeep
-docker.compose.yml
+docker-compose.yml
+

@@ -1,6 +1,9 @@
 name: 'notion2hugo'
 author: 'Tsubasa Mochida'
-description: "A document written in Notion that is converted to hugo. However, it is currently dedicated to the author's personal use."
+description: "This action converts a document written in Notion to hugo. However, it is currently limited to the author's personal use."
 branding:
   icon: 'bell'
   color: 'green'
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/tbsmcd/notion2hugo/converter:latest'

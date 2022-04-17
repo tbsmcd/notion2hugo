@@ -1,8 +1,1 @@
-# sort_types
-
-## 実行環境
-
-```bash
-$ docker-compose up -d --build
-$ docker-compose exec notion-blog bash
-```
+This action converts a document written in Notion to hugo. However, it is currently limited to the author's personal use.
