@@ -1,8 +1,8 @@
 name: convert
 on:
-  schedule:
-    - cron:  '*/5 * * * *'
-  workflow_dispatch:
+#  schedule:
+#    - cron:  '*/5 * * * *'
+#  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
