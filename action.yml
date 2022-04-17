@@ -1,0 +1,6 @@
+name: 'notion2hugo'
+author: 'Tsubasa Mochida'
+description: "A document written in Notion that is converted to hugo. However, it is currently dedicated to the author's personal use."
+branding:
+  icon: 'bell'
+  color: 'green'

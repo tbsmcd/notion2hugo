@@ -1,0 +1,5 @@
+requests ~= 2.27.1
+python-dotenv
+notion2md
+GitPython
+Pillow
