@@ -1,0 +1,24 @@
+name: convert
+on:
+  schedule:
+    - cron:  '*/1 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shogo82148/actions-mutex@v1
+      - uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: converter
+        uses: docker://ghcr.io/tbsmcd/notion2hugo/converter:latest
+        with:
+          blog_db_id: ${{ secrets.INPUT_BLOG_DB_ID }}
+          github_email: ${{ secrets.INPUT_GITHUB_EMAIL }}
+          github_token: ${{ secrets.INPUT_GETHUB_TOKEN }}
+          github_user: ${{ secrets.INPUT_GITHUB_USER }}
+          github_username: ${{ secrets.INPUT_GITHUB_USERNAME }}
+          notion_api_token: ${{ secrets.INPUT_NOTION_API_TOKEN }}
+          notion_user: ${{secrets.INPUT_NOTION_USER}}
