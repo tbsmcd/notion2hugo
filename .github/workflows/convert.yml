@@ -18,7 +18,7 @@ jobs:
         with:
           blog_db_id: ${{ secrets.INPUT_BLOG_DB_ID }}
           github_email: ${{ secrets.INPUT_GITHUB_EMAIL }}
-          github_token: ${{ secrets.INPUT_GETHUB_TOKEN }}
+          github_token: ${{ secrets.INPUT_GITHUB_TOKEN }}
           github_user: ${{ secrets.INPUT_GITHUB_USER }}
           github_username: ${{ secrets.INPUT_GITHUB_USERNAME }}
           notion_api_token: ${{ secrets.INPUT_NOTION_API_TOKEN }}
