@@ -11,5 +11,5 @@ RUN pip install --upgrade setuptools
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ app/
-ENTRYPOINT ["python", "app/main.py"]
+COPY app/ /app/
+ENTRYPOINT ["python", "/app/main.py"]

@@ -1,4 +1,5 @@
 import os
+from os import environ
 import shutil
 import datetime as dt
 import json
@@ -18,14 +19,14 @@ from PIL import Image
 load_dotenv()
 hugo_branch = 'source'
 endpoint = 'https://api.notion.com/v1/{0}'
-api_headers = {'Authorization': 'Bearer {0}'.format(os.getenv('NOTION_API_TOKEN')),
+api_headers = {'Authorization': 'Bearer {0}'.format(environ.get('INPUT_NOTION_API_TOKEN')),
                 'Content-Type': 'application/json',
                 'Notion-Version': '2022-02-22'}
-blog_db_id = os.getenv('BLOG_DB_ID')
+blog_db_id = environ.get('INPUT_BLOG_DB_ID')
 
-os.environ['GIT_USERNAME'] = os.getenv('GITHUB_USER')
-os.environ['GIT_PASSWORD'] = os.getenv('GITHUB_TOKEN')
-os.environ['NOTION_TOKEN'] = os.getenv('NOTION_API_TOKEN')
+os.environ['GIT_USERNAME'] = environ.get('INPUT_GITHUB_USER')
+os.environ['GIT_PASSWORD'] = environ.get('INPUT_GITHUB_TOKEN')
+os.environ['NOTION_TOKEN'] = environ.get('INPUT_NOTION_API_TOKEN')
 
 
 def str_to_timestamp(iso_string):
@@ -104,13 +105,13 @@ if __name__ == '__main__':
     if os.path.exists(local_repo):
         shutil.rmtree(local_repo)
     remote_repo = 'https://{}:{}@github.com/tbsmcd/tbsmcd.github.io.git'\
-        .format(os.getenv('GITHUB_USER'), os.getenv('GITHUB_TOKEN'))
+        .format(environ.get('INPUT_GITHUB_USER'), environ.get('INPUT_GITHUB_TOKEN'))
     Repo.clone_from(remote_repo, local_repo)
     repo = Repo(local_repo)
     repo.git.checkout('source')
 
-    repo.config_writer().set_value('user', 'name', os.getenv('GITHUB_USERNAME')).release()
-    repo.config_writer().set_value('user', 'email', os.getenv('GITHUB_EMAIL')).release()
+    repo.config_writer().set_value('user', 'name', environ.get('INPUT_GITHUB_USERNAME')).release()
+    repo.config_writer().set_value('user', 'email', environ.get('INPUT_GITHUB_EMAIL')).release()
 
     # notion2md で markdown を取得する
     # OGP image も取得してしまう
