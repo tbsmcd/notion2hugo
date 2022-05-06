@@ -164,6 +164,10 @@ if __name__ == '__main__':
             meta_rows.append('image: "{}"'.format(page['ogp_filename']))
         header = '---\n{}\n---\n\n\n'.format('\n'.join(meta_rows))
 
+        # Markdown を編集・修正
+        markdown_file = os.path.join(notion_base, page['id'], page['id'].replace('-', '') + '.md')
+        with open(markdown_file, mode='r') as f:
+            md = f.read()
         # list 表示に余計な空白が入る箇所を修正
         md = re.sub(r'^-  .+', '- ', md, flags=(re.MULTILINE | re.DOTALL))
         md_lines = md.splitlines()
