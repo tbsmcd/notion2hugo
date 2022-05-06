@@ -141,13 +141,15 @@ if __name__ == '__main__':
                 f.write(url_data)
                 page['ogp_filename'] = 'ogp.' + ext
 
-        # ディレクトリ内の画像ファイルの情報を取得
-        images = []
+        # ディレクトリ内の画像を最大幅800にリサイズする
         for f in glob.glob(os.path.join(notion_base, page['id'], '*')):
             if re.search(r'\.(bmp|gif|png|jpeg|jpg|tiff|tif|webp)$', f, re.IGNORECASE):
                 im = Image.open(f)
                 w, h = im.size
-                images.append({'path': f, 'width': w})
+                if w > 800:
+                    height = round(h * 800/w)
+                    resized = im.resize((800, height))
+                    resized.save(f)
 
         # メタ情報を整理
         meta_rows = [
@@ -162,25 +164,18 @@ if __name__ == '__main__':
             meta_rows.append('image: "{}"'.format(page['ogp_filename']))
         header = '---\n{}\n---\n\n\n'.format('\n'.join(meta_rows))
 
-        # Markdown を編集し、画像タグを置換
-        markdown_file = os.path.join(notion_base, page['id'], page['id'].replace('-', '') + '.md')
-        with open(markdown_file, mode='r') as f:
-            md = f.read()
-        for i in images:
-            img = i['path'].split('/')[-1]
-            m = re.findall(r'!\[(.*)]\(' + img + '\)', md, flags=re.DOTALL)
-            if len(m) >= 1:
-                alt = urllib.parse.unquote(m[0])
-            else:
-                alt = ''
-            if i['width'] >= 800:
-                md = re.sub(r'!\[.*]\((' + img + ')\)', r'{{< img800x src="\1" alt="' + alt + '" >}}', md, flags=(re.MULTILINE | re.DOTALL))
-            elif i['width'] >= 600:
-                md = re.sub(r'!\[.*]\((' + img + ')\)', r'{{< img600x src="\1" alt="' + alt + '" >}}', md, flags=(re.MULTILINE | re.DOTALL))
-            elif i['width'] >= 400:
-                md = re.sub(r'!\[.*]\((' + img + ')\)', r'{{< img400x src="\1" alt="' + alt + '" >}}', md, flags=(re.MULTILINE | re.DOTALL))
-            else:
-                md = re.sub(r'!\[.*]\((' + img + ')\)', r'{{< img src="\1" alt="' + alt + '" >}}', md, flags=(re.MULTILINE | re.DOTALL))
+        # list 表示に余計な空白が入る箇所を修正
+        md = re.sub(r'^-  .+', '- ', md, flags=(re.MULTILINE | re.DOTALL))
+        md_lines = md.splitlines()
+        i = -1
+        fix_list = []
+        for li in md_lines:
+            i += 1
+            if len(li) == 0 and i > 0 and len(md_lines) > i + 1:
+                if md_lines[i - 1].strip().startswith('- ') and md_lines[i + 1].strip().startswith('- '):
+                    continue
+            fix_list.append(li)
+        md = '\n'.join(fix_list)
 
         # メタ情報を Markdown と組み合わせ index.md を作成する
         with open(os.path.join(notion_base, page['id'], 'index.md'), mode='w') as f:
