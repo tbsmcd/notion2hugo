@@ -148,7 +148,7 @@ if __name__ == '__main__':
                 w, h = im.size
                 if w > 800:
                     height = round(h * 800/w)
-                    resized = im.resize((800, height))
+                    resized = im.resize((800, height), resample=Image.LANCZOS)
                     resized.save(f)
 
         # メタ情報を整理
