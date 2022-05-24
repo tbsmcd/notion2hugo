@@ -182,13 +182,15 @@ if __name__ == '__main__':
         md = '\n'.join(fix_list)
 
         # シリーズを追加
-        footer = ''
-        for series in page['series']:
-            footer = footer + '\n{{< series name="' + series +'">}}'
+        series = ''
+        if len(page['series']) > 0:
+            series = series + '\n'
+        for s in page['series']:
+            series = series + '{{< series name="' + s +'">}}\n'
 
         # メタ情報を Markdown と組み合わせ index.md を作成する
         with open(os.path.join(notion_base, page['id'], 'index.md'), mode='w') as f:
-            f.write(header + md + footer)
+            f.write(header + series + md)
         os.remove(markdown_file)
 
         # ファイルを hugo 用リポジトリに追加する
