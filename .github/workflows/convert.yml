@@ -1,7 +1,7 @@
 name: convert
 on:
   schedule:
-    - cron:  ' * * * *'
+    - cron:  '1 * * * *'
   workflow_dispatch:
 jobs:
   build:
